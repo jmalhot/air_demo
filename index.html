@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AIR Demo</title>
+  </head>
+  <body class="page-login">
+  <header class="site-header" id="site-header">
+    <div class="logo" aria-label="Braintrust">
+      <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <path fill="currentColor" d="M16 1.5 18.6 12.1 29.5 16 18.6 19.9 16 30.5 13.4 19.9 2.5 16 13.4 12.1Z"/>
+        <path fill="currentColor" d="M16 6.2 17.7 13.4 24.8 16 17.7 18.6 16 25.8 14.3 18.6 7.2 16 14.3 13.4Z" opacity=".35"/>
+      </svg>
+      <span class="logo-word">Braintrust</span>
+    </div>
+    <button type="button" class="logout-btn hidden" id="logout">Log out</button>
+  </header>
+  <div class="wrap">
+    <section id="login">
+      <div class="login-card">
+        <h1>Sign in</h1>
+        <p class="sub">AIR Demo interview</p>
+        <form id="login-form">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" autocomplete="username" required />
+
+          <label for="login-password">Password</label>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required />
+
+          <p class="error" id="login-error"></p>
+          <button class="primary" id="login-btn" type="submit">Sign in</button>
+        </form>
+      </div>
+    </section>
+
+      <section id="setup" class="hidden">
+        <h1>Interview setup</h1>
+        <p class="sub">Paste a job description and start a live Gemini 3.8 interview.</p>
+        <form id="setup-form">
+          <label for="jd">Job description</label>
+          <textarea id="jd" name="jd" required></textarea>
+
+          <div class="grid">
+            <div>
+              <label for="voice">Voice</label>
+              <select id="voice"></select>
+            </div>
+            <div>
+              <label for="language">Language</label>
+              <select id="language"></select>
+            </div>
+            <div>
+              <label for="minutes">Minutes</label>
+              <select id="minutes"></select>
+            </div>
+          </div>
+          <div class="avatar-off">
+            <label for="avatar">Avatar</label>
+            <select id="avatar" disabled></select>
+            <p class="hint">Talking avatars need Gemini Enterprise Live Avatar.</p>
+          </div>
+
+          <p class="error" id="setup-error"></p>
+          <button class="primary" id="start" type="submit">Start interview</button>
+        </form>
+      </section>
+
+      <section id="live" class="hidden">
+        <div class="stage">
+          <div class="stage-voice" id="voice-stage">
+            <div class="orb"></div>
+            <p>Voice interview</p>
+          </div>
+          <video id="avatar-video" class="hidden" autoplay playsinline></video>
+        </div>
+        <div class="bar">
+          <span id="status">Connecting…</span>
+          <div class="bar-right">
+            <span id="timer">00:00</span>
+            <button type="button" class="logout-btn logout-inline" id="logout-live">Log out</button>
+          </div>
+        </div>
+        <div class="transcript" id="transcript" aria-label="Interview transcript"></div>
+        <button class="primary" id="end" type="button">End interview</button>
+      </section>
+
+      <section id="thanks" class="thanks hidden">
+        <h1>Thank you</h1>
+        <p class="sub" id="thanks-reason">The interview has ended.</p>
+        <div class="transcript" id="thanks-transcript"></div>
+        <button class="primary" id="again" type="button">Run another interview</button>
+      </section>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "air-demo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:api": "tsx --env-file=.env scripts/dev-api.ts",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:unit": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@google/genai": "^2.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "tsx": "^4.20.5",
+    "typescript": "~5.8.2",
+    "vercel": "^50.32.5",
+    "vite": "6.2.0",
+    "vitest": "4.0.18"
+  }
+}
