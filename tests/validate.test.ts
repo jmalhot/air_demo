@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildSystemInstruction, parseSessionBody } from '../api/validate';
+import { buildSystemInstruction, parseSessionBody } from '../server/validate';
 
 const base = {
   username: 'admin1',

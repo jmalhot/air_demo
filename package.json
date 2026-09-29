@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "dev:api": "tsx --env-file=.env scripts/dev-api.ts",
-    "build": "vite build",
+    "build": "node scripts/bundle-api.mjs && vite build",
+    "bundle:api": "node scripts/bundle-api.mjs",
     "preview": "vite preview",
     "test:unit": "vitest run",
     "typecheck": "tsc --noEmit"
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "esbuild": "^0.25.0",
     "tsx": "^4.20.5",
     "typescript": "~5.8.2",
     "vercel": "^50.32.5",

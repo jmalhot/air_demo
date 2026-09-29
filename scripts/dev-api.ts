@@ -1,5 +1,5 @@
 import { createServer } from 'node:http';
-import sessionHandler from '../api/session.ts';
+import sessionHandler from '../server/session.ts';
 
 const PORT = 3001;
 
