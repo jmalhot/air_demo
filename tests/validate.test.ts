@@ -48,8 +48,8 @@ describe('parseSessionBody', () => {
 });
 
 describe('buildSystemInstruction', () => {
-  it('includes job description and minutes', () => {
-    const text = buildSystemInstruction({
+  const text = buildSystemInstruction(
+    {
       username: 'admin1',
       password: 'admin1',
       jobDescription: 'Build APIs',
@@ -57,10 +57,28 @@ describe('buildSystemInstruction', () => {
       language: 'en-US',
       minutes: 15,
       avatarName: 'Ben',
-    });
+    },
+    new Date('2026-09-30T16:00:00.000Z'),
+  );
+
+  it('includes job description, clock, and spoken-interview framing', () => {
     expect(text).toContain('Build APIs');
     expect(text).toContain('15 minutes');
     expect(text).toContain('80%');
-    expect(text).toContain('Do not continue past the time limit');
+    expect(text).toContain('2026-09-30');
+    expect(text).toContain('speech-to-text');
+    expect(text).toContain('English');
+  });
+
+  it('uses production AIR identity and style without tools this demo does not have', () => {
+    expect(text).toContain('AIR');
+    expect(text).toContain('Braintrust');
+    expect(text).toContain('end_interview');
+    expect(text).toContain('get_remaining_time');
+    expect(text).toContain('plain-text');
+    expect(text).not.toContain('end_interview_tool');
+    expect(text).not.toContain('document_consultant_tool');
+    expect(text).not.toContain('follow_up_strategy_consultant_tool');
+    expect(text).not.toContain('summary_consultant_tool');
   });
 });
