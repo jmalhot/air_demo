@@ -7,6 +7,7 @@ import {
   type Session,
 } from '@google/genai';
 import { createBlobFromInt16, PcmPlayer } from './pcm';
+import { captureVideoJpeg, getInterviewMedia } from './camera';
 import { END_INTERVIEW_MIN_ELAPSED_RATIO } from '../shared/options';
 
 export type SessionPayload = {
@@ -38,9 +39,11 @@ export class LiveInterview {
   private lines: Array<{ role: 'ai' | 'you'; text: string }> = [];
   private openRole: 'ai' | 'you' | null = null;
   private wrapUpCued = false;
+  private frameTimer = 0;
 
   constructor(
-    private readonly videoEl: HTMLVideoElement,
+    private readonly selfVideoEl: HTMLVideoElement,
+    private readonly voiceStageEl: HTMLElement,
     private readonly statusEl: HTMLElement,
     private readonly transcriptEl: HTMLElement,
     private readonly onEnded: (reason: string) => void,
@@ -58,7 +61,9 @@ export class LiveInterview {
     this.wrapUpCued = false;
     this.transcriptEl.replaceChildren();
     await this.player.resume();
-    this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+    const media = await getInterviewMedia();
+    this.mediaStream = media.stream;
+    this.attachSelfView(media.hasVideo);
     this.inputCtx = new AudioContext({ sampleRate: 16000 });
     await this.inputCtx.resume();
 
@@ -108,6 +113,7 @@ export class LiveInterview {
     });
 
     await this.setupMic();
+    if (media.hasVideo) this.setupVideoFrames();
     setTimeout(() => {
       if (!this.session || !this.active) return;
       this.session.sendClientContent({
@@ -148,6 +154,11 @@ export class LiveInterview {
 
   stop(): void {
     this.active = false;
+    window.clearInterval(this.frameTimer);
+    this.frameTimer = 0;
+    this.selfVideoEl.srcObject = null;
+    this.selfVideoEl.classList.add('hidden');
+    this.voiceStageEl.classList.remove('hidden');
     this.player.stop();
     this.worklet?.disconnect();
     this.worklet = null;
@@ -197,6 +208,35 @@ export class LiveInterview {
       }
     };
     source.connect(this.worklet);
+  }
+
+  private attachSelfView(hasVideo: boolean): void {
+    if (!hasVideo || !this.mediaStream) {
+      this.selfVideoEl.classList.add('hidden');
+      this.voiceStageEl.classList.remove('hidden');
+      return;
+    }
+    this.selfVideoEl.srcObject = this.mediaStream;
+    this.selfVideoEl.muted = true;
+    this.selfVideoEl.classList.remove('hidden');
+    this.voiceStageEl.classList.add('hidden');
+    void this.selfVideoEl.play().catch(() => {
+      /* autoplay can wait for user gesture; stream is still captured */
+    });
+  }
+
+  private setupVideoFrames(): void {
+    window.clearInterval(this.frameTimer);
+    this.frameTimer = window.setInterval(() => {
+      if (!this.active || !this.session) return;
+      const frame = captureVideoJpeg(this.selfVideoEl);
+      if (!frame) return;
+      try {
+        this.session.sendRealtimeInput({ video: frame });
+      } catch {
+        /* socket closed */
+      }
+    }, 700);
   }
 
   transcriptHtml(): string {

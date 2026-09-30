@@ -68,6 +68,8 @@ describe('buildSystemInstruction', () => {
     expect(text).toContain('2026-09-30');
     expect(text).toContain('speech-to-text');
     expect(text).toContain('English');
+    expect(text).toContain('video frames');
+    expect(text).not.toContain('that is not provided to you');
   });
 
   it('uses production AIR identity and style without tools this demo does not have', () => {

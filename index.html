@@ -37,32 +37,35 @@
       <section id="setup" class="hidden">
         <h1>Interview setup</h1>
         <p class="sub">Paste a job description and start a live Gemini 3.8 interview.</p>
-        <form id="setup-form">
-          <label for="jd">Job description</label>
-          <textarea id="jd" name="jd" required></textarea>
-
-          <div class="grid">
-            <div>
-              <label for="voice">Voice</label>
-              <select id="voice"></select>
-            </div>
-            <div>
-              <label for="language">Language</label>
-              <select id="language"></select>
-            </div>
-            <div>
-              <label for="minutes">Minutes</label>
-              <select id="minutes"></select>
-            </div>
+        <form id="setup-form" class="setup-form">
+          <div class="setup-jd">
+            <label for="jd">Job description</label>
+            <textarea id="jd" name="jd" required></textarea>
           </div>
-          <div class="avatar-off">
-            <label for="avatar">Avatar</label>
-            <select id="avatar" disabled></select>
-            <p class="hint">Talking avatars need Gemini Enterprise Live Avatar.</p>
-          </div>
+          <div class="setup-options">
+            <div class="grid">
+              <div>
+                <label for="voice">Voice</label>
+                <select id="voice"></select>
+              </div>
+              <div>
+                <label for="language">Language</label>
+                <select id="language"></select>
+              </div>
+              <div>
+                <label for="minutes">Minutes</label>
+                <select id="minutes"></select>
+              </div>
+            </div>
+            <div class="avatar-off">
+              <label for="avatar">Avatar</label>
+              <select id="avatar" disabled></select>
+              <p class="hint">Talking avatars need Gemini Enterprise Live Avatar.</p>
+            </div>
 
-          <p class="error" id="setup-error"></p>
-          <button class="primary" id="start" type="submit">Start interview</button>
+            <p class="error" id="setup-error"></p>
+            <button class="primary" id="start" type="submit">Start interview</button>
+          </div>
         </form>
       </section>
 
@@ -72,6 +75,7 @@
             <div class="orb"></div>
             <p>Voice interview</p>
           </div>
+          <video id="self-video" class="self-video hidden" autoplay playsinline muted></video>
           <video id="avatar-video" class="hidden" autoplay playsinline></video>
         </div>
         <div class="bar">

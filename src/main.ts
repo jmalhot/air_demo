@@ -29,7 +29,8 @@ const minutesEl = document.querySelector('#minutes') as HTMLSelectElement;
 const avatarEl = document.querySelector('#avatar') as HTMLSelectElement;
 const setupError = document.querySelector('#setup-error') as HTMLElement;
 const startBtn = document.querySelector('#start') as HTMLButtonElement;
-const videoEl = document.querySelector('#avatar-video') as HTMLVideoElement;
+const selfVideoEl = document.querySelector('#self-video') as HTMLVideoElement;
+const voiceStageEl = document.querySelector('#voice-stage') as HTMLElement;
 const statusEl = document.querySelector('#status') as HTMLElement;
 const transcriptEl = document.querySelector('#transcript') as HTMLElement;
 const thanksTranscript = document.querySelector('#thanks-transcript') as HTMLElement;
@@ -196,7 +197,7 @@ setupForm.addEventListener('submit', async (event) => {
       setupError.textContent = data.error || 'Could not start';
       return;
     }
-    live = new LiveInterview(videoEl, statusEl, transcriptEl, finish);
+    live = new LiveInterview(selfVideoEl, voiceStageEl, statusEl, transcriptEl, finish);
     show('live');
     await live.start(data);
     timerEl.textContent = live.remainingLabel();
@@ -209,7 +210,7 @@ setupForm.addEventListener('submit', async (event) => {
   } catch (err) {
     const name = err instanceof DOMException ? err.name : '';
     if (name === 'NotAllowedError' || name === 'NotFoundError') {
-      setupError.textContent = 'Please allow microphone access to start.';
+      setupError.textContent = 'Please allow microphone access to start. Camera is optional.';
     } else {
       setupError.textContent = 'Demo not available';
     }
