@@ -70,6 +70,9 @@ describe('buildSystemInstruction', () => {
     expect(text).toContain('English');
     expect(text).toContain('video frames');
     expect(text).not.toContain('that is not provided to you');
+    expect(text).toContain('CAMERA AND INTEGRITY');
+    expect(text).toContain('adjust your camera');
+    expect(text).toContain('looking at another screen');
   });
 
   it('uses production AIR identity and style without tools this demo does not have', () => {
